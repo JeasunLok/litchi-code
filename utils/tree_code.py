@@ -103,22 +103,26 @@ def tree_code_from_table(file_path):
     headers[0] = "上次飞巡时间"
     for row in rows:
         row[0] = row[0].split("_")[1][:8]
-
+        
     # 树体分区编号代码
-    zone_code = "ZZZZZZZ"
+    zone_code = rows[0][4]
     # 树体编号代码
     num_code = rows[0][6]
     # 初始是否失效代码
     activate_code = "Y" # "Y" "N"
     # 初始树类型代码
     type_code = "P" # "P" "C" "B" "N"
+    # 飞巡任务状态
+    task_status_code = "S"
+    # 下次飞巡任务截止时间
+    ddl_code = "YYYYMMDD"
     # 初始物候期编码
     main_code = ("U"+"0"*36)*3+("U"+"0"*9)*2+("U"+"0"*27)*1+("U"+"0"*18)*2+("U"+"0"*9)*1+("U"+"0"*18)*1
 
     # print(main_code)
     # 物候期编码
     main_index = find_all_U(main_code)
-    print(main_index)
+    # print(main_index)
     time_code = []
     # print(rows)
 
@@ -130,7 +134,7 @@ def tree_code_from_table(file_path):
         sunny_shady_items = sunny_shady_identify(items)
         time_tree_main_code = tree_main_code(main_index, sunny_shady_items, main_code)
         # print(time_tree_main_code)
-        time_code.append(zone_code + "-" + num_code.zfill(10) + "-" + activate_code + "-" + type_code + str(time) + "-" + time_tree_main_code)
+        time_code.append(str(zone_code).zfill(6)  + "-" + num_code + "-" + activate_code + "-" + type_code + "-" + task_status_code + "-" + str(time) + "-" + ddl_code + "-" + time_tree_main_code)
         
     return time_code
 
